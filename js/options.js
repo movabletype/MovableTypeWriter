@@ -28,7 +28,16 @@ jQuery( function() {
       password: setting.password,
     }, function(response) {
       if (response.error) {
-        // Handle error
+        var code = response.error.code;
+        var msg;
+        if (code === 404 ) {
+          msg = 'Cannot access to Data API CGI script. Please confirm URL for Data API Scrpt.'
+        } else if (code === 401 ) {
+          msg = 'Failed to sign in to Movable Type. Please confirm your Username or Password.';
+        } else {
+          msg = response.error.message;
+        }
+        jQuery('#msg').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>')
         return;
       }
       api.storeTokenData(response);
