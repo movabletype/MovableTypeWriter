@@ -20,7 +20,7 @@ jQuery( function() {
     // Sign In
     var api = new MT.DataAPI({
       baseUrl:  setting.apipath,
-      clientId: "postmt4chrome"
+      clientId: "movabletype-writer"
     });
 
     api.authenticate({
