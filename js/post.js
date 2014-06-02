@@ -5,6 +5,7 @@ jQuery( function() {
     setting = JSON.parse(localStorage.getItem('setting'));
     if ( !setting || !setting.apipath ) {
       location.href="options.html";
+      return;
     }
 
     // Sign In
@@ -19,13 +20,33 @@ jQuery( function() {
       remember: true
     }, function(response) {
       if (response.error) {
-        // Handle error
+        var code = response.error.code;
+        var msg;
+        if (code === 404 ) {
+          msg = 'Cannot access to Data API CGI script. Please confirm URL for Data API Scrpt.'
+        } else if (code === 401 ) {
+          msg = 'Failed to sign in to Movable Type. Please confirm your Username or Password.';
+        } else {
+          msg = response.error.message;
+        }
+        jQuery('#msg').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>')
         return;
       }
       api.storeTokenData(response);
+
+      // Loading site list.
       api.listBlogsForUser('me', function(response) {
         if (response.error) {
-          // Handle error
+          var code = response.error.code;
+          var msg;
+          if (code === 404 ) {
+            msg = 'User not found.'
+          } else if (code === 403 ) {
+            msg = 'You have no permissions.';
+          } else {
+            msg = response.error.message;
+          }
+          jQuery('#msg').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>')
           return;
         }
         var $blogListBox = jQuery('#form-blog-list');
@@ -35,6 +56,7 @@ jQuery( function() {
         $blogListBox.removeAttr('disabled');
       });
 
+      // Post handler
       jQuery('#button-post').click( function() {
         jQuery('#msg').children().remove();
         jQuery('#post-form-fieldset').attr('disabled', 'disabled');
@@ -47,12 +69,24 @@ jQuery( function() {
         var siteId = jQuery('#form-blog-list option:selected').val();
         api.getToken(function(response) {
           if (response.error) {
-            // Handle error
+            // Try again to sign in.
             return;
           }
           api.createEntry(siteId, entry, function(response) {
             if (response.error) {
-              // Handle error
+              var code = response.error.code;
+              var msg;
+              if (code === 404 ) {
+                msg = 'Site not found.'
+              } else if (code === 401 ) {
+                msg = 'Should authenticate first.';
+              } else if (code === 403 ) {
+                msg = 'You do not have permission to create an entry.';
+              } else {
+                msg = response.error.message;
+              }
+              jQuery('#msg').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>')
+              jQuery('#post-form-fieldset').removeAttr('disabled');
               return;
             }
             jQuery('#msg').append('<p class="alert bg-success">Your post has been published. <a href="' + response.permalink + '" target="_blank">View Entry</a></p>');
