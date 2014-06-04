@@ -4,18 +4,21 @@
     <meta charset="UTF-8">
     <title>Movable Type Writer</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/mt-data-api.min.js"></script>
-    <script type="text/javascript" src="js/post.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="row">
-	<div class="col-md-12">
+        <div id="logo" class="col-md-1">
+          <a data-toggle="modal" href="#setting-panel-dialog"><img src="icon_48.png"></a>
+        </div>
+        <div class="col-md-12">
           <form id="post-form" name="post-form">
             <fieldset id="post-form-fieldset">
-              <legend>Movable Type Writer - Write a new Post.</legend>
               <div id="msg"></div>
               <div class="form-group">
                 <label for="form-blog-list">Blog</label>
@@ -34,8 +37,43 @@
               <button type="button" id="button-post" class="btn btn-primary">Post</button>
             </fieldset>
           </form>
-	</div>
+        </div>
       </div>
     </div>
+
+    <div class="modal" id="setting-panel-dialog" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Settings</h4>
+          </div>
+          <div class="modal-body">
+            <div id="msg-modal"></div>
+            <form id="setting-form">
+              <fieldset id="setting-form-set">
+                <div class="form-group">
+                  <label for="mt-api-path">URL for Movable Type Data API Script</label>
+                  <input type="text" class="form-control" id="mt-api-path" placeholder="https://your-host/mt/mt-data-api.cgi">
+                </div>
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control" id="username" placeholder="Your sign in ID of Movable Type">
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Your sign in password of Movable Type">
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="save-settings" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>
