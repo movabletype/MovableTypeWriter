@@ -86,6 +86,21 @@ jQuery( function() {
         // Sign in
         doSignIn(settings.username, settings.password)
         .then( loadSiteList );
+
+        // Load summernote
+        jQuery('#entry-body').summernote({
+          height: 300,
+          toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link']],
+            ['view', ['codeview']]
+          ]                
+        });
       }
     );
   });
@@ -128,7 +143,7 @@ jQuery( function() {
 
     var entry = {};
     entry['title'] = jQuery('#entry-title').val();
-    entry['body'] = jQuery('#entry-body').val();
+    entry['body'] = jQuery('#entry-body').code();;
     entry['status'] = 'Publish';
       
     var siteId = jQuery('#form-blog-list option:selected').val();
@@ -159,9 +174,14 @@ jQuery( function() {
       });
     });
   });
+
+  jQuery('#button-setting').click( function() {
+    jQuery('#setting-panel-dialog').modal();
+  })
 });
 
 // Sticky header
+/*
 $(window).scroll(function(){
   if ($(window).scrollTop() >= 50) {
     $('.global').addClass('fixed');
@@ -170,11 +190,14 @@ $(window).scroll(function(){
     $('.global').removeClass('fixed');
   }
 });
+*/
 
 // textarea auto height
-$(document).on('input.textarea', '#entry-body', function(){
+/*
+$(document).on('input.textarea', '#entry-body1', function(){
   var minRows = this.getAttribute('data-min-rows')|0,
   rows        = this.value.split("\n").length;
 
   this.rows = rows < minRows ? minRows : rows;
 });
+*/

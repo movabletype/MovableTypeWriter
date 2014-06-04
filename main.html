@@ -4,10 +4,13 @@
   <meta charset="UTF-8">
   <title>Movable Type Writer</title>
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="css/main.css" rel="stylesheet">
+  <link href="summernote/summernote.css" rel="stylesheet">
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="js/mt-data-api.min.js"></script>
+  <script type="text/javascript" src="summernote/summernote.min.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
@@ -15,6 +18,7 @@
   <div class="container-fluid">
     <form id="post-form" name="post-form">
       <header class="global clearfix">
+        <button type="button" id="button-setting" class="btn btn-default"><span class="glyphicon glyphicon-th"></span></button>
         <h1>Movable Type Writer - Write a new Post.</h1>
         <button type="button" id="button-post" class="btn btn-default">Post</button>
       </header>
@@ -32,7 +36,7 @@
         </div>
         <div class="form-group">
           <label for="entry-body">Body</label>
-          <textarea class="form-control" rows="10" data-min-rows="10" id="entry-body" name="body"></textarea>
+          <div id="entry-body"></div>
         </div>
       </div>
     </form>
