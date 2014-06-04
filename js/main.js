@@ -174,6 +174,10 @@ jQuery( function() {
       });
     });
   });
+
+  jQuery('#button-setting').click( function() {
+    jQuery('#setting-panel-dialog').modal();
+  })
 });
 
 // Sticky header
