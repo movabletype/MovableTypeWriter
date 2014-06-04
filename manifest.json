@@ -3,20 +3,19 @@
     "description": "Create and post a new entry to your Movable Type",
     "manifest_version": 2,
     "version": "1.0",
-    "app": {
-        "launch": {
-            "local_path": "main.html"
-        }
-    },
-    "options_page": "options.html",
     "icons": {
          "16": "icon_16.png",
          "48": "icon_48.png",
          "128": "icon_128.png"
     },
     "permissions": [
-        "tabs",
+        "storage",
         "http://*/*",
         "https://*/*"
-    ]
+    ],
+    "app": {
+        "background": {
+            "scripts": ["js/background.js"]
+        }
+    }
 }
