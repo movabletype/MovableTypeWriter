@@ -160,3 +160,21 @@ jQuery( function() {
     });
   });
 });
+
+// Sticky header
+$(window).scroll(function(){
+  if ($(window).scrollTop() >= 50) {
+    $('.global').addClass('fixed');
+  }
+  else {
+    $('.global').removeClass('fixed');
+  }
+});
+
+// textarea auto height
+$(document).on('input.textarea', '#entry-body', function(){
+  var minRows = this.getAttribute('data-min-rows')|0,
+  rows        = this.value.split("\n").length;
+
+  this.rows = rows < minRows ? minRows : rows;
+});
