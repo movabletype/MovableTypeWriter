@@ -12,27 +12,29 @@
   <body>
     <div class="container">
       <div class="row">
-        <form id="post-form" name="post-form">
-          <fieldset id="post-form-fieldset">
-            <legend>Movable Type Writer - Write a new Post.</legend>
-            <div id="msg"></div>
-            <div class="form-group">
-              <label for="form-blog-list">Blog</label>
-              <select class="form-control" id="form-blog-list" disabled>
-                <option value="">Select blog...</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="entry-title">Title</label>
-              <input type="text" class="form-control" id="entry-title" name="title" placeholder="Title">
-            </div>
-            <div class="form-group">
-              <label for="entry-body">Body</label>
-              <textarea class="form-control" rows="5" id="entry-body" name="body"></textarea>
-            </div>
-            <button type="button" id="button-post" class="btn btn-primary">Post</button>
-          </fieldset>
-        </form>
+	<div class="col-md-12">
+          <form id="post-form" name="post-form">
+            <fieldset id="post-form-fieldset">
+              <legend>Movable Type Writer - Write a new Post.</legend>
+              <div id="msg"></div>
+              <div class="form-group">
+                <label for="form-blog-list">Blog</label>
+                <select class="form-control" id="form-blog-list" disabled>
+                  <option value="">Select blog...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="entry-title">Title</label>
+                <input type="text" class="form-control" id="entry-title" name="title" placeholder="Title">
+              </div>
+              <div class="form-group">
+                <label for="entry-body">Body</label>
+                <textarea class="form-control" rows="5" id="entry-body" name="body"></textarea>
+              </div>
+              <button type="button" id="button-post" class="btn btn-primary">Post</button>
+            </fieldset>
+          </form>
+	</div>
       </div>
     </div>
   </body>
