@@ -1,7 +1,7 @@
 {
     "name": "Movable Type Writer",
     "description": "Create and post a new entry to your Movable Type",
-    "manifest_version": 3,
+    "manifest_version": 2,
     "version": "1.0",
     "app": {
         "launch": {
