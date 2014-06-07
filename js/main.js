@@ -1,7 +1,7 @@
 jQuery( function() {
   var api;
 
-  // functions
+  // function: Loading personal settings
   var getSettings = function() {
     var def = new jQuery.Deferred();
     var keys = [ 'apipath', 'username', 'password' ];
@@ -13,6 +13,7 @@ jQuery( function() {
     return def.promise();
   };
 
+  // function: Sign into Movable Type via Data API
   var doSignIn = function(user, passwd) {
     var def = new jQuery.Deferred();
 
@@ -37,6 +38,7 @@ jQuery( function() {
     return def.promise();
   };
 
+  // Function: Loading site list 
   var loadSiteList = function() {
     var def = new jQuery.Deferred();
 
@@ -65,9 +67,25 @@ jQuery( function() {
   };
 
   jQuery(document).ready( function() {
+    // Load summernote
+    jQuery('#entry-body').summernote({
+      height: 300,
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'italic', 'underline', 'clear']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['table', ['table']],
+        ['insert', ['link']],
+        ['view', ['codeview']]
+      ]                
+    });
+
     // Show setting dialog when user does not setup yet.
     getSettings().then(
       function(settings) {
+
         if (!settings || !settings.apipath) {
           return jQuery('#setting-panel-dialog').modal();
         }
@@ -87,20 +105,6 @@ jQuery( function() {
         doSignIn(settings.username, settings.password)
         .then( loadSiteList );
 
-        // Load summernote
-        jQuery('#entry-body').summernote({
-          height: 300,
-          toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            ['table', ['table']],
-            ['insert', ['link']],
-            ['view', ['codeview']]
-          ]                
-        });
       }
     );
   });
@@ -128,7 +132,7 @@ jQuery( function() {
         chrome.storage.local.set(settings, function() {
           jQuery('#msg-modal').append('<p class="alert bg-success">Your settings has been saved.')
         });
-
+        loadSiteList();
       },
       function (msg) {
           jQuery('#msg-modal').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>');
