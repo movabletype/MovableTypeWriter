@@ -7,7 +7,7 @@ jQuery( function() {
     var keys = [ 'apipath', 'username', 'password' ];
 
     chrome.storage.local.get(keys, function(item) {
-        return def.resolve(item);
+      return def.resolve(item);
     });
 
     return def.promise();
@@ -57,6 +57,8 @@ jQuery( function() {
       }
 
       var $blogListBox = jQuery('#form-blog-list');
+      $blogListBox.children().remove();
+      $blogListBox.append($('<option>').html('Select blog...'));
       response.items.forEach( function(x, i) {
         $blogListBox.append($('<option>').html(x.name).val(x.id));
       });
