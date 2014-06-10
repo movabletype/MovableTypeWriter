@@ -22,7 +22,7 @@ jQuery( function() {
         var code = response.error.code;
         var msg;
         if (code === 404 ) {
-          msg = 'Cannot access to Data API CGI script. Please confirm URL for Data API Scrpt.'
+          msg = 'Cannot access to Data API CGI script. Please confirm URL for Data API Scrpt.';
         } else if (code === 401 ) {
           msg = 'Failed to sign in to Movable Type. Please confirm your Username or Password.';
         } else {
@@ -38,7 +38,7 @@ jQuery( function() {
     return def.promise();
   };
 
-  // Function: Loading site list 
+  // Function: Loading site list
   var loadSiteList = function() {
     var def = new jQuery.Deferred();
 
@@ -47,7 +47,7 @@ jQuery( function() {
         var code = response.error.code;
         var msg;
         if (code === 404 ) {
-          msg = 'User not found.'
+          msg = 'User not found.';
         } else if (code === 403 ) {
           msg = 'You have no permissions.';
         } else {
@@ -81,7 +81,7 @@ jQuery( function() {
         ['table', ['table']],
         ['insert', ['link']],
         ['view', ['codeview']]
-      ]                
+      ]
     });
 
     // Show setting dialog when user does not setup yet.
@@ -93,14 +93,14 @@ jQuery( function() {
         }
 
         // Set value
-        jQuery('#mt-api-path').val(settings.apipath)
-        jQuery('#username').val(settings.username)
-        jQuery('#password').val(settings.password)
+        jQuery('#mt-api-path').val(settings.apipath);
+        jQuery('#username').val(settings.username);
+        jQuery('#password').val(settings.password);
 
         // Making API instance
         api = new MT.DataAPI({
           baseUrl:  settings.apipath,
-          clientId: "movabletype-writer"
+          clientId: 'movabletype-writer'
         });
 
         // Sign in
@@ -124,7 +124,7 @@ jQuery( function() {
     // Making API instance
     api = new MT.DataAPI({
       baseUrl:  settings.apipath,
-      clientId: "movabletype-writer"
+      clientId: 'movabletype-writer'
     });
 
     // Sign In
@@ -132,7 +132,7 @@ jQuery( function() {
       function () {
         // Save settings
         chrome.storage.local.set(settings, function() {
-          jQuery('#msg-modal').append('<p class="alert bg-success">Your settings has been saved.')
+          jQuery('#msg-modal').append('<p class="alert bg-success">Your settings has been saved.');
         });
         loadSiteList();
       },
@@ -149,9 +149,9 @@ jQuery( function() {
 
     var entry = {};
     entry['title'] = jQuery('#entry-title').val();
-    entry['body'] = jQuery('#entry-body').code();;
+    entry['body'] = jQuery('#entry-body').code();
     entry['status'] = 'Publish';
-      
+
     var siteId = jQuery('#form-blog-list option:selected').val();
     api.getToken(function(response) {
       if (response.error) {
@@ -163,7 +163,7 @@ jQuery( function() {
           var code = response.error.code;
           var msg;
           if (code === 404 ) {
-            msg = 'Site not found.'
+            msg = 'Site not found.';
           } else if (code === 401 ) {
             msg = 'Should authenticate first.';
           } else if (code === 403 ) {
@@ -171,7 +171,7 @@ jQuery( function() {
           } else {
             msg = response.error.message;
           }
-          jQuery('#msg').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>')
+          jQuery('#msg').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>');
           jQuery('#post-form-fieldset').removeAttr('disabled');
           return;
         }
@@ -183,7 +183,7 @@ jQuery( function() {
 
   jQuery('#button-setting').click( function() {
     jQuery('#setting-panel-dialog').modal();
-  })
+  });
 });
 
 // Sticky header
