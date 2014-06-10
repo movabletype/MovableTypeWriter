@@ -101,6 +101,11 @@ jQuery( function() {
             ['view', ['codeview']]
           ]                
         });
+
+        // Load Rating
+        jQuery('#entry-score').raty({
+          path: 'raty/lib/img'
+        });
       }
     );
   });
