@@ -58,11 +58,15 @@ jQuery( function() {
 
       var $blogListBox = jQuery('#form-blog-list');
       $blogListBox.children().remove();
-      $blogListBox.append($('<option>').html('Select blog...'));
+      $blogListBox.append($('<option>').html('Select a blog to write'));
       response.items.forEach( function(x, i) {
         $blogListBox.append($('<option>').html(x.name).val(x.id));
       });
+      jQuery('#select-setting').css("display","none");
+      $blogListBox.css("display", "inline-block");
       $blogListBox.removeAttr('disabled');
+      // Custom Select field
+      $blogListBox.customSelect();
     });
 
     return def.promise();
@@ -71,7 +75,7 @@ jQuery( function() {
   jQuery(document).ready( function() {
     // Load summernote
     jQuery('#entry-body').summernote({
-      height: 300,
+      height: 400,
       toolbar: [
         ['style', ['style']],
         ['font', ['bold', 'italic', 'underline', 'clear']],
@@ -113,6 +117,7 @@ jQuery( function() {
 
   jQuery('#save-settings').click( function() {
     jQuery('#msg-modal').children().remove();
+    jQuery('#setting-form-set').css("display", "inline-block");
     jQuery('#setting-form-set').attr('disabled', 'disabled');
 
     var settings = {
@@ -140,6 +145,7 @@ jQuery( function() {
           jQuery('#msg-modal').append('<p class="alert bg-danger">An error occurs: ' + msg + '</p>');
       }
     );
+    jQuery('#setting-form-set').css("display", "inline-block");
     jQuery('#setting-form-set').removeAttr('disabled');
   });
 
@@ -181,13 +187,14 @@ jQuery( function() {
     });
   });
 
-  jQuery('#button-setting').click( function() {
+  jQuery('#button-setting, #select-setting').click( function() {
     jQuery('#setting-panel-dialog').modal();
   });
 
   jQuery('#setting-panel-dialog').on('show.bs.modal', function() {
     jQuery('#msg-modal').children().remove();    
   });
+
 });
 
 // Sticky header
