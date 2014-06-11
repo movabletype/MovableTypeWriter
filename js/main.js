@@ -184,6 +184,10 @@ jQuery( function() {
   jQuery('#button-setting').click( function() {
     jQuery('#setting-panel-dialog').modal();
   });
+
+  jQuery('#setting-panel-dialog').on('show.bs.modal', function() {
+    jQuery('#msg-modal').children().remove();    
+  });
 });
 
 // Sticky header
