@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en" ng-app="MovableTypeWriterApp">
 <head>
   <meta charset="UTF-8">
   <title>Movable Type Writer</title>
@@ -7,17 +7,12 @@
   <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="css/main.css" rel="stylesheet">
   <link href="summernote/summernote.css" rel="stylesheet">
-  <script type="text/javascript" src="js/jquery.min.js"></script>
-  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/mt-data-api.min.js"></script>
-  <script type="text/javascript" src="summernote/summernote.min.js"></script>
-  <script src="js/jquery.customSelect.min.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
 </head>
-<body>
+<body ng-controller="MainController">
 
   <div class="container-fluid">
-    <form id="post-form" name="post-form">
+    <form id="post-form" name="post-form" ng-submit="postEntry()">
+      <input type="hidden" ng-mode="entry.id" id="id" name="id">
       <fieldset id="post-form-fieldset">
         <header class="global row">
           <div class="col-md-3">
@@ -25,12 +20,12 @@
           </div>
           <div class="col-md-6">
           <a href="javascript://" id="select-setting" class="form-control">Please set up your website</a>
-          <select class="form-control" id="form-blog-list" disabled>
+          <select ng-model="entry.siteId" name="site_id" class="form-control" id="form-site-list" disabled>
               <option value="">Select blog to write</option>
           </select>
           </div>
           <div class="col-md-3">
-            <button type="button" id="button-setting" class="btn btn-default"><span class="glyphicon glyphicon-th"></span></button>
+            <button ng-click="openSettings()" type="button" id="button-setting" class="btn btn-default"><span class="glyphicon glyphicon-th"></span></button>
           </div>
         </header>
         <div class="container">
@@ -38,17 +33,15 @@
             <div class="col-md-9">
               <div id="msg"></div>
               <div class="form-group">
-                <!-- <label for="entry-title">Title</label> -->
-                <input type="text" class="form-control input-lg" id="entry-title" name="title" placeholder="Title">
+                <input type="text" ng-mode="entry.title" class="form-control input-lg" id="entry-title" name="title" placeholder="Title">
               </div>
               <div class="form-group">
-                <!-- <label for="entry-body">Body</label> -->
                 <div id="entry-body"></div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="widget">
-              <button type="button" id="button-post" class="btn btn-primary btn-lg btn-block">Post</button>
+              <button type="submit" id="button-post" class="btn btn-primary btn-lg btn-block">Post</button>
               </div>
             </div>
         </div>
@@ -57,38 +50,42 @@
     </form>
   </div>
 
-  <div class="modal" id="setting-panel-dialog" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Settings</h4>
-        </div>
-        <div class="modal-body">
-          <div id="msg-modal"></div>
-          <form id="setting-form">
-            <fieldset id="setting-form-set">
-              <div class="form-group">
-                <label for="mt-api-path">URL for Movable Type Data API Script</label>
-                <input type="text" class="form-control" id="mt-api-path" placeholder="https://your-host/mt/mt-data-api.cgi">
-              </div>
-              <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Your sign in ID of Movable Type">
-              </div>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Your sign in password of Movable Type">
-              </div>
-            </fieldset>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="save-settings" type="button" class="btn btn-primary">Save</button>
-        </div>
+  <script type="text/ng-template" id="setting-panel-dialog">
+    <form id="setting-form" ng-submit="authenticate()">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="$close()">&times;</button>
+        <h4 class="modal-title">Settings</h4>
       </div>
-    </div>
-  </div>
+      <div class="modal-body">
+        <fieldset id="setting-form-set">
+          <div id="msg-modal"></div>
+          <div class="form-group">
+            <label for="mt-api-path">URL for Movable Type Data API Script</label>
+            <input ng-model="settings.base_api_url" required type="url" class="form-control" id="mt-api-path" placeholder="https://your-host/mt/mt-data-api.cgi">
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input ng-model="credentials.username" required type="text" class="form-control" id="username" placeholder="Your sign in ID of Movable Type">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input ng-model="credentials.password" required type="password" class="form-control" id="password" placeholder="Your sign in password of Movable Type">
+          </div>
+        </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="$close()">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </script>
+
+  <script type="text/javascript" src="angularjs/angular.min.js"></script>
+  <script type="text/javascript" src="angular-ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+<!--
+  <script type="text/javascript" src="summernote/summernote.min.js"></script>
+-->
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/storage.js"></script>
 </body>
 </html>
