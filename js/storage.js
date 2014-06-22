@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('MovableTypeWriterApp')
   .factory('dataStore', [ '$q', '$rootScope', function dataStoreFactory($q, $rootScope) {
 

@@ -58,7 +58,10 @@
       </div>
       <div class="modal-body">
         <fieldset id="setting-form-set">
-          <div id="msg-modal"></div>
+          <div ng-show="success"><p class="alert bg-success">Your settings has been saved.</p></div>
+          <div ng-show="error.badRequest"><p class="alert bg-danger">Unknown error occurs: {{error.message}}</p></div>
+          <div ng-show="error.invalidAuth"><p class="alert bg-danger">Failed to sign in. Username or password is invalid.</p></div>
+          <div ng-show="error.invalidUrl"><p class="alert bg-danger">Failed to sign in. Invalid URL for Data API.</p></div>
           <div class="form-group">
             <label for="mt-api-path">URL for Movable Type Data API Script</label>
             <input ng-model="settings.base_api_url" required type="url" class="form-control" id="mt-api-path" placeholder="https://your-host/mt/mt-data-api.cgi">
