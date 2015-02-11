@@ -1,0 +1,69 @@
+<div class="container-fluid" ng-controller="PostController">
+  <form id="post-form" name="post-form" ng-submit="postEntry()">
+    <input type="hidden" ng-mode="entry.id" id="id" name="id">
+    <fieldset id="post-form-fieldset">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9 vertical-scrollable">
+            <div class="form-group">
+              <label for="entry-cf-price">商品名</label>
+              <input type="text" ng-model="entry.title" class="form-control input-sm" id="entry-title" name="title" placeholder="Title">
+            </div>
+            <div class="form-group">
+              <label for="entry-cf-price">商品画像</label>
+              <input type="file" class="form-control input-sm" id="entry-cf_price" name="price" placeholder="商品写真">
+            </div>
+            <div class="form-group">
+              <label for="entry-cf-price">価格</label>
+              <input type="text" ng-model="entry.price" class="form-control input-sm" id="entry-cf_price" name="price" placeholder="価格">
+            </div>
+            <div class="form-group">
+              <label for="entry-cf-price">商品説明</label>
+              <textarea rows="4" config="options" ng-model="entry.body" style="width: 100%"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="entry-cf-price">カラー</label>
+              <select class="form-control input-sm" id="form-site-list">
+                <option value="black">ブラック</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="entry-cf-price">素材</label>
+              <input type="text"  class="form-control input-sm" id="entry-title" name="title" placeholder="Title">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="widget">
+                <button ng-disabled="!entry.siteId" type="submit" id="button-post" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Post</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="widget">
+                <button type="submit" id="button-post" class="btn btn-normal btn-sm btn-block"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <select ng-disabled="!sites" ng-model="entry.siteId" ng-options="site.id as site.name for site in sites" class="form-control input-sm" id="form-site-list">
+                <option value="">-- Select blog to post</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Categories</h3>
+                </div>
+                <div class="panel-body" style="height: 300px; overflow-x: auto">
+<!--                  <i ng-disabled="!sites" class="fa fa-spin fa-spinner fa-pulse spinner-center"></i>-->
+                  <categories categories='categories'></collection>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+          </div>
+      </div>
+    </div>
+    </fieldset>
+  </form>
+</div>

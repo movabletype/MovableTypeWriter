@@ -1,0 +1,28 @@
+<div class="col-md-12">
+  <form id="setting-form" ng-submit="authenticate()">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Settings</h3>
+      </div>
+      <div class="panel-body">
+        <fieldset id="setting-form-set">
+          <div class="form-group">
+            <label for="mt-api-path">URL for Movable Type Data API Script</label>
+            <input ng-model="settings.base_api_url" required type="url" class="form-control" id="mt-api-path" placeholder="https://your-host/mt/mt-data-api.cgi">
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input ng-model="credentials.username" required type="text" class="form-control" id="username" placeholder="Your sign in ID of Movable Type">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input ng-model="credentials.password" required type="password" class="form-control" id="password" placeholder="Your sign in password of Movable Type">
+          </div>
+        </fieldset>
+      </div>
+      <div class="panel-footer">
+        <button type="button" class="btn btn-default" ng-click="$close()">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+  </form>
+</div>

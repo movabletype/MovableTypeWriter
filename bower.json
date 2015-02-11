@@ -1,0 +1,14 @@
+{
+  "name": "movabletypewriter",
+  "version": "0.1.1",
+  "dependencies": {
+    "angular": "~1.3.8",
+    "font-awesome": "~4.2.0",
+    "angular-ui-bootstrap-bower": "~0.12.0",
+    "bootstrap": "~3.3.1",
+    "angular-route": "~1.3.8",
+    "summernote": "~0.6.0",
+    "angular-summernote": "~0.3.1"
+  },
+  "devDependencies": {}
+}
