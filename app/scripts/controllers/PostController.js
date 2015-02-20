@@ -1,9 +1,8 @@
 angular.module(appName)
   .controller('PostController', [
     '$scope',
-    'dataStore',
     'PostData',
-    function($scope, dataStore, PostData) {
+    function($scope, PostData) {
 
       // Initialize model data
       $scope.entry = PostData;

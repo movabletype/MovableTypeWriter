@@ -97,3 +97,11 @@ ul.list-non-styled {
 .vertical-scrollable {
   @include x-scrollable(520px);
 }
+
+ul.nav.nav-tabs li {
+  margin-left: 10px;
+}
+
+.tab-content {
+  padding: 1em;
+}

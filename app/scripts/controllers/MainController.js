@@ -3,10 +3,10 @@ angular.module(appName)
     '$scope',
     '$timeout',
     '$location',
-    'version',
-    function($scope, $timeout, $location, version) {
+    'appInfo',
+    function($scope, $timeout, $location, appInfo) {
       // Set application version.
-      $scope.version = version;
+      $scope.version = appInfo.VERSION;
 
       // Notification Control
       $scope.notification = {

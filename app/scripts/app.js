@@ -3,26 +3,29 @@
 var appName = 'MovableTypeWriterApp';
 var app = angular.module(appName, ['ui.bootstrap', 'ngRoute', 'summernote']);
 
-// constant values
-app.constant('version', '1.0.1')
-  .constant('clientId', 'MovableTypeWriter')
-  .constant('dataAPIVersion', 'v2')
-  .constant('debug', true )
-;
-
 // route configuration
 app.config(function($routeProvider) {
   var doneSettings = {
-    doSetup: function($q, $location, appSettings, debug) {
-      if (debug) { console.log('doneSettings.doSetup'); }
-
-      appSettings.isConfigured().then(function(ret) {
-        if ( ret ) {
-          $location.path('/post');
+    doSetup: function($q, $location, appSettings) {
+      appSettings.getAPIPath().then(function(apiPath) {
+        if (!apiPath) {
+          $location.path('/settings');
+          return $q.reject();
+        }
+        return appSettings.getAPIUsername();
+      }).then(function(username) {
+        if ( !username ) {
+          $location.path('/settings');
+          return $q.reject();
+        }
+        return appSettings.getAPIPassword();
+      }).then(function(password){
+        if (!password) {
+          $location.path('/settings');
           return $q.reject();
         }
         else {
-          $location.path('/settings');
+          $location.path('/post');
           return $q.reject();
         }
       });
@@ -41,7 +44,7 @@ app.config(function($routeProvider) {
   });
   $routeProvider.when('/settings', {
     templateUrl: 'views/settings.html',
-    controller: 'SettingController'
+    controller: 'ServerSettingsController'
   });
   $routeProvider.otherwise({
     redirectTo: '/'
