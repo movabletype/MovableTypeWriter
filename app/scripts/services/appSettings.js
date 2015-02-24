@@ -1,7 +1,8 @@
 app.factory('appSettings', [
   'apiSettings',
+  'cacheData',
   '$q',
-  function (apiSettings, $q) {
+  function (apiSettings, cacheData, $q) {
 
     // Load settings from chrome storage
     var getConfigVal = function(rootKey, key, defaultVal) {

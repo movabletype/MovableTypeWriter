@@ -4,126 +4,135 @@ var appName = 'MovableTypeWriterApp';
 var app = angular.module(appName, ['ui.bootstrap', 'ngRoute', 'summernote']);
 
 // route configuration
-app.config(function($routeProvider) {
-  var doneSettings = {
-    doSetup: function($q, $location, appSettings) {
-      appSettings.getAPIPath().then(function(apiPath) {
-        if (!apiPath) {
-          $location.path('/settings');
-          return $q.reject();
+app.config([
+  '$routeProvider',
+  '$httpProvider',
+  function($routeProvider, $httpProvider) {
+    var doneSettings = {
+      doSetup: function($q, $location, appSettings) {
+        appSettings.getAPIPath().then(function(apiPath) {
+          if (!apiPath) {
+            $location.path('/settings');
+            return $q.reject();
+          }
+        return appSettings.getAPIUsername();
+        }).then(function(username) {
+          if ( !username ) {
+            $location.path('/settings');
+            return $q.reject();
+          }
+          return appSettings.getAPIPassword();
+        }).then(function(password){
+          if (password) {
+            $location.path('/post');
+            return $q.reject();
+          }
+          else {
+            $location.path('/settings');
+            return $q.reject();
+          }
+        });
+      }
+    };
+
+    $routeProvider.when('/', {
+      template: '<h1>Initilize...</h1>',
+      controller: function(){},
+      resolve: doneSettings
+    });
+    $routeProvider.when('/post', {
+      templateUrl: 'views/post.html',
+      controller: 'PostController',
+      resolve: doneSettings
+    });
+    $routeProvider.when('/settings', {
+      templateUrl: 'views/settings.html',
+      controller: 'ServerSettingsController'
+    });
+    $routeProvider.otherwise({
+      redirectTo: '/'
+    });
+
+    // intercept for oauth tokens
+    $httpProvider.interceptors.push([
+      '$rootScope',
+      '$q',
+      '$injector',
+      '$location',
+      'apiSettings',
+      'transformRequestAsFormPost',
+      function ($rootScope, $q, $injector, $location, apiSettings, transformRequestAsFormPost) {
+        return {
+          'responseError': function(response) {
+            if (response.status===401) {
+              var deferred = $q.defer();
+              var url = $rootScope.baseAPIPath + '/' + apiSettings.API_VERSION + '/authentication';
+              if (url == response.config.url ) {
+                deferred.reject(response);
+              }
+              var params = {
+                username: $rootScope.username,
+                password: $rootScope.password,
+                clientId: apiSettings.CLIENT_ID
+              };
+              $injector.get("$http")({
+                method: 'post',
+                url: url,
+                transformRequest: transformRequestAsFormPost,
+                data: params
+              }).success(function(resp) {
+                $rootScope.accessToken = resp.accessToken;
+                $injector.get("$http")(response.config).then(function(resp) {
+                  deferred.resolve(resp);
+                }, function(resp) {
+                  deferred.reject();
+                });
+              })
+                .error(function(){
+                  deferred.reject();
+                  $location.path('/settings');
+                  return;
+                });
+              return deferred.promise;
+            }
+            return $q.reject(response);
+          }
+        };
+      }
+    ]);
+  }])
+  .run([
+    '$rootScope',
+    '$injector',
+    'appSettings',
+    function($rootScope, $injector, appSettings) {
+      // Initialize
+      $rootScope.accessToken = '';
+      $rootScope.baseAPIPath = '';
+      $rootScope.username = '';
+      $rootScope.password = '';
+
+      appSettings.getAPIPath().then(function(val) {
+        if (val) {
+          $rootScope.baseAPIPath = val;
         }
         return appSettings.getAPIUsername();
-      }).then(function(username) {
-        if ( !username ) {
-          $location.path('/settings');
-          return $q.reject();
+      }).then(function(val) {
+        if (val) {
+          $rootScope.username = val;
         }
         return appSettings.getAPIPassword();
-      }).then(function(password){
-        if (!password) {
-          $location.path('/settings');
-          return $q.reject();
-        }
-        else {
-          $location.path('/post');
-          return $q.reject();
+      }).then(function(val) {
+        if (val) {
+          $rootScope.password = val;
         }
       });
+
+      $injector.get("$http").defaults.transformRequest = function(data, headersGetter) {
+        if ($rootScope.accessToken) {
+          headersGetter()['X-MT-Authorization'] = "MTAuth accessToken=" + $rootScope.accessToken;
+        }
+      };
     }
-  };
-
-  $routeProvider.when('/', {
-    template: '<h1>Initilize...</h1>',
-    controller: function(){},
-    resolve: doneSettings
-  });
-  $routeProvider.when('/post', {
-    templateUrl: 'views/post.html',
-    controller: 'PostController',
-    resolve: doneSettings
-  });
-  $routeProvider.when('/settings', {
-    templateUrl: 'views/settings.html',
-    controller: 'ServerSettingsController'
-  });
-  $routeProvider.otherwise({
-    redirectTo: '/'
-  });
-});
-
-/*
-  .factory('Entry', ['$resource', 'dataStore', 'dataAPIVersion', function($resource, dataStore, dataAPIVersion) {
-    var apiPath = '';
-
-    dataStore.loadSettings().then(function(settings) {
-      if (settings && settings.apipath) {
-        apiPath = settings.apipath;
-      }
-    });
-
-    if (!apipath) {
-      throw "Please setup Movable Type Writer.";
-    }
-
-    var url = apiPath + '/' + dataAPIVersion;
-
-    return $resource(url + '/sites/:site_id/entries/:id', {id: @id}, {
-      'query': {
-        method:'GET',
-        isArray: true,
-        transformResponse : function (data, headers) {
-          data = angular.fromJson(data);
-          if (!data.error) {
-            throw "Cannot load entries.";
-          }
-          return data.items;
-        }
-      },
-      'save' : {
-        method: 'POST',
-        transformResponse : function (data, headers) {
-          data = angular.fromJson(data);
-          if (!data.error) {
-            throw "Cannot update an entry.";
-          }
-          return data;
-        },
-        transformRequest: function (data, headers) {
-          var extra = '';
-          if ( data.id ) {
-            extra = '__method=PUT&';
-          }
-          return extra + 'entry=' + data;
-        }
-      },
-      'delete' : {
-        method: 'POST',
-        transformResponse : function (data, headers) {
-          data = angular.fromJson(data);
-          if (!data.error) {
-            throw "Cannot delete an entry.";
-          }
-          return data;
-        },
-        transformRequest: function (data, headers) {
-          return '__method=DELETE';
-        }
-      },
-      'remove' : {
-        method: 'POST',
-        transformResponse : function (data, headers) {
-          data = angular.fromJson(data);
-          if (!data.error) {
-            throw "Cannot delete an entry.";
-          }
-          return data;
-        },
-        transformRequest: function (data, headers) {
-          return '__method=DELETE';
-        }
-      }
-    });
-  }])
-
+  ])
 ;
-*/

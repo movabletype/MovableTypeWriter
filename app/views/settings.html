@@ -2,7 +2,7 @@
   <tabset>
     <tab heading="Server Settings">
       <div class="col-md-12" ng-controller="ServerSettingsController">
-        <form id="setting-form" ng-submit="authenticate()">
+        <form id="setting-form" ng-submit="validateAuthentication()">
           <fieldset id="setting-form-set">
             <div class="form-group">
               <label for="mt-api-path">URL for Movable Type Data API Script</label>
@@ -22,6 +22,16 @@
       </div>
     </tab>
     <tab heading="Compose Settings">
+      <div class="col-md-12" ng-controller="ComposeSettingsController" ng-init="initialize()">
+        <form id="setting-form" ng-submit="save()">
+          <accordion>
+            <accordion-group heading="{{site.name}}" ng-repeat="site in sites">
+            </accordion-group>
+          </accordion>
+
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
     </tab>
   </tabset>
 </div>

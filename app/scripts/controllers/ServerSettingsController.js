@@ -1,10 +1,11 @@
 app.controller('ServerSettingsController', [
+  '$rootScope',
   '$scope',
   '$location',
   'appSettings',
   'AuthService',
-  '$window',
-  function($scope, $location, appSettings, AuthService, $window) {
+  'Sites',
+  function($rootScope, $scope, $location, appSettings, AuthService, Sites) {
     $scope.settings = {
       baseApiUrl: '',
       username: '',
@@ -22,22 +23,28 @@ app.controller('ServerSettingsController', [
       $scope.settings.password = password;
     });
 
-    $scope.authenticate = function() {
+    $scope.validateAuthentication = function() {
       var scope = angular.element('#main').scope();
 
       AuthService.signIn($scope.settings.baseApiUrl, $scope.settings.username, $scope.settings.password)
         .success(function(res) {
-          // Save token data
-          $window.sessionStorage.token = res.accessToken;
+          // Keep configuration
+          $rootScope.accessToken = res.accessToken;
+          $rootScope.baseAPIPath = $scope.settings.baseApiUrl;
+          $rootScope.username = $scope.settings.username;
+          $rootScope.password = $scope.settings.password;
 
           // Save settings
           appSettings.setAPIPath($scope.settings.baseApiUrl).then(function(){
             return appSettings.setAPIUsername($scope.settings.username);
           }).then(function(){
             appSettings.setAPIPassword($scope.settings.password); 
-          });
 
-          // Reload site list
+            // Reload site list
+            Sites.listBlogsForUser('me').then(function(sites){
+              console.log(sites);
+            });
+          });
 
           scope.updateSuccessMessage('Your settings has been saved.');
 

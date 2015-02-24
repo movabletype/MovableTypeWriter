@@ -1,8 +1,13 @@
-<div class="row" ng-controller="PostController">
+<div class="row" ng-controller="PostController" ng-init="initialize()">
   <form id="post-form" name="post-form" ng-submit="postEntry()">
     <input type="hidden" ng-mode="entry.id" id="id" name="id">
     <fieldset id="post-form-fieldset">
       <div class="col-md-9 vertical-scrollable">
+        <div class="form-group">
+          <select ng-disabled="!sites" ng-model="entry.siteId" ng-options="site.id as site.name for site in sites" ng-change="siteChanged()" class="form-control input-sm" id="form-site-list">
+            <option value="">-- Select blog to post</option>
+          </select>
+        </div>
         <div class="form-group">
           <label for="entry-cf-price">商品名</label>
           <input type="text" ng-model="entry.title" class="form-control input-sm" id="entry-title" name="title" placeholder="Title">
@@ -40,11 +45,6 @@
           <div class="widget">
             <button type="submit" id="button-post" class="btn btn-normal btn-sm btn-block"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
           </div>
-        </div>
-        <div class="form-group">
-          <select ng-disabled="!sites" ng-model="entry.siteId" ng-options="site.id as site.name for site in sites" class="form-control input-sm" id="form-site-list">
-            <option value="">-- Select blog to post</option>
-          </select>
         </div>
         <div class="form-group">
           <div class="panel panel-default">

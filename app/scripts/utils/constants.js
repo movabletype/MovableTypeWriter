@@ -10,3 +10,13 @@ app.constant('apiSettings', {
   USERNAME: 'username',
   PASSWORD: 'password'
 });
+
+app.constant('cacheData', {
+  KEY_NAME: 'cacheData',
+  CACHE_SITE_LIST: 'siteList'
+});
+
+app.constant('Events', {
+  RELOAD_SITE_LIST: 'reloadSitesist'
+});
+
