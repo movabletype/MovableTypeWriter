@@ -4,7 +4,9 @@ angular.module(appName)
     '$timeout',
     '$location',
     'appInfo',
-    function($scope, $timeout, $location, appInfo) {
+    'Events',
+    'Notification',
+    function($scope, $timeout, $location, appInfo, Events, Notification) {
       // Set application version.
       $scope.version = appInfo.VERSION;
 
@@ -40,7 +42,20 @@ angular.module(appName)
         if(!$scope.$$phase) {
           $scope.$apply();
         }
+        $timeout(function() {
+          $scope.notification.error = false;
+        }, 3000);
       };
+
+      // Event Handler
+      $scope.$on(Events.SHOW_MESSAGE, function(event, data) {
+        if ( data.state === Notification.ERROR ) {
+          $scope.updateErrorMessage(data.message);
+        }
+        else if (data.state === Notification.SUCCESS) {
+          $scope.updateSuccessMessage(data.message);
+        }
+      });
 
       // Setting Event
       $scope.toggleSettings = function() {

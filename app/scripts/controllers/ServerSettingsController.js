@@ -5,7 +5,8 @@ app.controller('ServerSettingsController', [
   'appSettings',
   'AuthService',
   'Sites',
-  function($rootScope, $scope, $location, appSettings, AuthService, Sites) {
+  'Events',
+  function($rootScope, $scope, $location, appSettings, AuthService, Sites, Events) {
     $scope.settings = {
       baseApiUrl: '',
       username: '',
@@ -25,7 +26,13 @@ app.controller('ServerSettingsController', [
 
     $scope.validateAuthentication = function() {
       var scope = angular.element('#main').scope();
+      var isApiPathChanged = $scope.settings.baseApiUrl !== $rootScope.baseAPIPath ? true : false;
 
+      // Clear cache;
+      $rootScope.accessToken = '';
+      $rootScope.baseAPIPath = '';
+      $rootScope.username = '';
+      $rootScope.password = '';
       AuthService.signIn($scope.settings.baseApiUrl, $scope.settings.username, $scope.settings.password)
         .success(function(res) {
           // Keep configuration
@@ -39,14 +46,13 @@ app.controller('ServerSettingsController', [
             return appSettings.setAPIUsername($scope.settings.username);
           }).then(function(){
             appSettings.setAPIPassword($scope.settings.password); 
-
-            // Reload site list
-            Sites.listBlogsForUser('me').then(function(sites){
-              console.log(sites);
-            });
           });
 
           scope.updateSuccessMessage('Your settings has been saved.');
+
+          if (isApiPathChanged) {
+            $rootScope.apiPathChanged = true;
+          }
 
         }).error(function(res, status) {
           if (status === 400) {

@@ -51,6 +51,10 @@ gulp.task('copy', ['sass'], function() {
   gulp.src('app/bower_components/angular-route/*.js')
     .pipe(gulp.dest('dist/vender/angular-route'));
 
+  // Vender libraries - Angular Messages
+  gulp.src('app/bower_components/angular-messages/*.js')
+    .pipe(gulp.dest('dist/vender/angular-messages'));
+
   // Vender libraries - Angular SummerNote
   gulp.src('app/bower_components/angular-summernote/dist/*.js')
     .pipe(gulp.dest('dist/vender/angular-summernote'));

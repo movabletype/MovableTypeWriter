@@ -63,8 +63,15 @@ app.config([
       'transformRequestAsFormPost',
       function ($rootScope, $q, $injector, $location, apiSettings, transformRequestAsFormPost) {
         return {
+          'request': function(config) {
+            if ($rootScope.accessToken) {
+              config.headers['X-MT-Authorization'] = "MTAuth accessToken=" + $rootScope.accessToken;
+            }
+            return config;
+          },
           'responseError': function(response) {
             if (response.status===401) {
+              $rootScope.accessToken = '';
               var deferred = $q.defer();
               var url = $rootScope.baseAPIPath + '/' + apiSettings.API_VERSION + '/authentication';
               if (url == response.config.url ) {
@@ -101,38 +108,32 @@ app.config([
       }
     ]);
   }])
-  .run([
-    '$rootScope',
-    '$injector',
-    'appSettings',
-    function($rootScope, $injector, appSettings) {
-      // Initialize
-      $rootScope.accessToken = '';
-      $rootScope.baseAPIPath = '';
-      $rootScope.username = '';
-      $rootScope.password = '';
+;
+app.run([
+  '$rootScope',
+  '$injector',
+  'appSettings',
+  function($rootScope, $injector, appSettings) {
+    // Initialize
+    $rootScope.accessToken = '';
+    $rootScope.baseAPIPath = '';
+    $rootScope.username = '';
+    $rootScope.password = '';
 
-      appSettings.getAPIPath().then(function(val) {
-        if (val) {
-          $rootScope.baseAPIPath = val;
-        }
-        return appSettings.getAPIUsername();
-      }).then(function(val) {
-        if (val) {
-          $rootScope.username = val;
-        }
-        return appSettings.getAPIPassword();
-      }).then(function(val) {
-        if (val) {
-          $rootScope.password = val;
-        }
-      });
-
-      $injector.get("$http").defaults.transformRequest = function(data, headersGetter) {
-        if ($rootScope.accessToken) {
-          headersGetter()['X-MT-Authorization'] = "MTAuth accessToken=" + $rootScope.accessToken;
-        }
-      };
-    }
-  ])
+    appSettings.getAPIPath().then(function(val) {
+      if (val) {
+        $rootScope.baseAPIPath = val;
+      }
+      return appSettings.getAPIUsername();
+    }).then(function(val) {
+      if (val) {
+        $rootScope.username = val;
+      }
+      return appSettings.getAPIPassword();
+    }).then(function(val) {
+      if (val) {
+        $rootScope.password = val;
+      }
+    });
+  }])
 ;

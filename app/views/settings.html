@@ -21,14 +21,28 @@
         </form>
       </div>
     </tab>
-    <tab heading="Compose Settings">
-      <div class="col-md-12" ng-controller="ComposeSettingsController" ng-init="initialize()">
-        <form id="setting-form" ng-submit="save()">
-          <accordion>
-            <accordion-group heading="{{site.name}}" ng-repeat="site in sites">
-            </accordion-group>
-          </accordion>
-
+    <tab heading="Upload Settings">
+      <div class="col-md-12" ng-controller="UploadSettingsController" ng-init="initialize()">
+        <form id="upload-setting-form" ng-submit="saveSettings()">
+          <fieldset id="upload-setting-form-set">
+            <div class="form-group">
+              <label for="default-upload-path">Default Upload Path</label>
+              <input ng-model="settings.defaultUploadPath" required type="text" class="form-control" id="default-upload-path" placeholder="The default path for upload image file.">
+            </div>
+            <div class="form-group">
+              <label for="thumbnail-size">Thumbnail Size</label>
+              <select ng-model="settings.thumbnailSize" class="form-control input-sm" id="thumbnail-size" ng-options="item.value as item.label for item in thumbnailList">
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="checkbox">
+                <label>
+                  <input ng-model="settings.square" type="checkbox" id="square">
+                  Square
+                </label>
+              </div>
+            </div>
+          </fieldset>
           <button type="submit" class="btn btn-primary">Save</button>
         </form>
       </div>

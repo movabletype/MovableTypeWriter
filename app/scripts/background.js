@@ -3,11 +3,11 @@ chrome.app.runtime.onLaunched.addListener(function() {
     id: 'MovableTypeWriter',
     bounds: {
       width: 1000,
-      height: 600,
+      height: 630,
       left: 100,
       top: 100
     },
     minWidth: 1000,
-    minHeight: 600
+    minHeight: 630
   });
 });

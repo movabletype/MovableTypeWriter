@@ -1,8 +1,8 @@
 app.factory('appSettings', [
   'apiSettings',
-  'cacheData',
+  'uploadSettings',
   '$q',
-  function (apiSettings, cacheData, $q) {
+  function (apiSettings, uploadSettings, $q) {
 
     // Load settings from chrome storage
     var getConfigVal = function(rootKey, key, defaultVal) {
@@ -58,6 +58,24 @@ app.factory('appSettings', [
       },
       setAPIPassword: function(val) {
         return setConfigVal(apiSettings.KEY_NAME, apiSettings.PASSWORD, val);
+      },
+      getDefaultUploadPath: function() {
+        return getConfigVal(uploadSettings.KEY_NAME, uploadSettings.DEFAULT_UPLOAD_PATH, '/');
+      },
+      setDefaultUploadPath: function(val) {
+        return setConfigVal(uploadSettings.KEY_NAME, uploadSettings.DEFAULT_UPLOAD_PATH, val);
+      },
+      getThumbnailSize: function() {
+        return getConfigVal(uploadSettings.KEY_NAME, uploadSettings.THUMBNAIL_SIZE, 'original');
+      },
+      setThumbnailSize: function(val) {
+        return setConfigVal(uploadSettings.KEY_NAME, uploadSettings.THUMBNAIL_SIZE, val);
+      },
+      getIsSquare: function() {
+        return getConfigVal(uploadSettings.KEY_NAME, uploadSettings.SQUARE, false);
+      },
+      setIsSquare: function(val) {
+        return setConfigVal(uploadSettings.KEY_NAME, uploadSettings.SQUARE, val);
       }
     };
   }])

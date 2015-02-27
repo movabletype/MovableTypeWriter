@@ -1,5 +1,5 @@
 <div class="row" ng-controller="PostController" ng-init="initialize()">
-  <form id="post-form" name="post-form" ng-submit="postEntry()">
+  <form id="post-form" name="postForm" ng-submit="postEntry()">
     <input type="hidden" ng-mode="entry.id" id="id" name="id">
     <fieldset id="post-form-fieldset">
       <div class="col-md-9 vertical-scrollable">
@@ -9,41 +9,34 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="entry-cf-price">商品名</label>
           <input type="text" ng-model="entry.title" class="form-control input-sm" id="entry-title" name="title" placeholder="Title">
         </div>
         <div class="form-group">
-          <label for="entry-cf-price">商品画像</label>
-          <input type="file" class="form-control input-sm" id="entry-cf_price" name="price" placeholder="商品写真">
-        </div>
-        <div class="form-group">
-          <label for="entry-cf-price">価格</label>
-          <input type="text" ng-model="entry.price" class="form-control input-sm" id="entry-cf_price" name="price" placeholder="価格">
-        </div>
-        <div class="form-group">
-          <label for="entry-cf-price">商品説明</label>
           <textarea summernote config="options" ng-model="entry.body" style="width: 100%"></textarea>
         </div>
         <div class="form-group">
-          <label for="entry-cf-price">カラー</label>
-          <select class="form-control input-sm" id="form-site-list">
-            <option value="black">ブラック</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="entry-cf-price">素材</label>
-          <input type="text"  class="form-control input-sm" id="entry-title" name="title" placeholder="Title">
+          <input type="text" ng-model="entry.basename" class="form-control input-sm" id="entry-basename" name="title" placeholder="Basename">
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
           <div class="widget">
-            <button ng-disabled="!entry.siteId" type="submit" id="button-post" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Post</button>
+            <button ng-show="entry.id" class="btn btn-success btn-lg btn-block" type="button" ng-click="newEntry()"><i class="fa fa-pencil-square-o"></i> New</button>
           </div>
         </div>
         <div class="form-group">
           <div class="widget">
-            <button type="submit" id="button-post" class="btn btn-normal btn-sm btn-block"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</button>
+            <button ng-disabled="!entry.siteId" type="submit" id="button-post" class="btn btn-primary btn-lg btn-block"><span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> {{primaryLabel}}</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="widget">
+            <button type="button" id="button-save" class="btn btn-normal btn-sm btn-block" ng-click="saveEntry()"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="widget">
+            <button ng-show="isSaved" type="button" id="button-save" class="btn btn-normal btn-sm btn-block" ng-click="loadEntry()"><span class="glyphicon glyphicon-floppy-open" aria-hidden="true"></span> Load</button>
           </div>
         </div>
         <div class="form-group">
@@ -52,7 +45,7 @@
               <h3 class="panel-title">Categories</h3>
             </div>
             <div class="panel-body" style="height: 300px; overflow-x: auto">
-                  <i ng-disabled="!sites" class="fa fa-spin fa-spinner fa-pulse spinner-center"></i>-->
+              <i ng-show="categoryLoading" class="fa fa-spinner fa-pulse fa-3x fa-fw spinner-center"></i>
               <categories categories='categories'></collection>
             </div>
           </div>

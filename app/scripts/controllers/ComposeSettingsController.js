@@ -29,7 +29,7 @@ app.controller('ComposeSettingsController', [
     // Initialize
     $scope.initialize = function() {
       if (!$scope.sites) {
-        Sites.listBlogsForUser('me', {fields: 'id,parent,name'});
+        Sites.listBlogsForUser('me', {limit: 999, fields: 'id,parent,name'});
       }
     };
 
