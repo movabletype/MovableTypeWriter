@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="MovableTypeWriterApp" ng-csp>
+<head>
+  <meta charset="UTF-8">
+  <title>Movable Type Writer</title>
+  <link rel="stylesheet" href="vender/angular/angular-csp.css">
+  <link rel="stylesheet" href="vender/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="vender/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="vender/summernote/summernote.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <script type="text/javascript" src="/vender/jquery/jquery.js"></script>
+  <script type="text/javascript" src="/vender/bootstrap/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/vender/summernote/summernote.min.js"></script>
+  <script type="text/javascript" src="/vender/angular/angular.min.js"></script>
+  <script type="text/javascript" src="/vender/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="/vender/angular-messages/angular-messages.min.js"></script>
+  <script type="text/javascript" src="/vender/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="/vender/angular-summernote/angular-summernote.min.js"></script>
+
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/utils/constants.js"></script>
+  <script type="text/javascript" src="js/controllers/MainController.js"></script>
+  <script type="text/javascript" src="js/controllers/ServerSettingsController.js"></script>
+  <script type="text/javascript" src="js/controllers/UploadSettingsController.js"></script>
+  <script type="text/javascript" src="js/controllers/PostController.js"></script>
+  <script type="text/javascript" src="js/directives/categories.js"></script>
+  <script type="text/javascript" src="js/services/AuthService.js"></script>
+  <script type="text/javascript" src="js/services/appSettings.js"></script>
+  <script type="text/javascript" src="js/services/PostData.js"></script>
+  <script type="text/javascript" src="js/services/CacheObject.js"></script>
+  <script type="text/javascript" src="js/services/transformRequestAsFormPost.js"></script>
+  <script type="text/javascript" src="js/services/Model/Sites.js"></script>
+  <script type="text/javascript" src="js/services/Model/Assets.js"></script>
+  <script type="text/javascript" src="js/services/Model/Categories.js"></script>
+  <script type="text/javascript" src="js/services/Model/Entries.js"></script>
+</head>
+<body id="main" ng-controller="MainController">
+
+  <div class="container-fluid">
+    <header class="global row">
+      <div id="banner-app-logo" class="col-md-3">
+        <h1 id="banner-app-title">Movable Type Writer ver.{{version}}</h1>
+      </div>
+      <div class="col-md-1 col-md-offset-8">
+        <button ng-click="toggleSettings()" type="button" id="button-setting" class="btn btn-default"><span class=" glyphicon glyphicon-cog"></span></button>
+      </div>
+    </header>
+
+    <div class="row">
+      <div ng-show="notification.success" class="col-md-12"><div class="alert alert-success alert-dismissible"><button type="button" class="close" aria-hidden="true">&times;</button>{{notification.message}}</div></div>
+      <div ng-show="notification.error" ng-init="notification.error=false" class="col-md-12"><div class="alert alert-danger">{{notification.message}}</div></div>
+    </div>
+    <div ng-view></div>
+  </div>
+</body>
+</html>
