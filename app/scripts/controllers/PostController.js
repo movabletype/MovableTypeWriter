@@ -12,7 +12,8 @@ angular.module(appName)
     'appSettings',
     'Notification',
     'cacheObject',
-    function($rootScope, $q, $scope, PostData, Sites, Events, Assets, Categories, Entries, appSettings, Notification, cacheObject) {
+    '$modal',
+    function($rootScope, $q, $scope, PostData, Sites, Events, Assets, Categories, Entries, appSettings, Notification, cacheObject, $modal) {
 
       // Initialize model data
       $scope.entry = PostData;
@@ -45,6 +46,13 @@ angular.module(appName)
       };
 
       var _postEntry = function() {
+        // Show progress bar
+        var modal = $modal.open({
+          templateUrl: "progress.html", 
+            backdrop: "static",
+            keyboard: false
+        });
+
         // Make clone object
         var entry = angular.extend({}, $scope.entry );
 
@@ -90,6 +98,7 @@ angular.module(appName)
             cacheObject.removeSavedEntry().then(function(){
               $scope.isSaved = false;
             });
+            modal.close();
             $rootScope.$broadcast(Events.SHOW_MESSAGE,{
               state: Notification.SUCCESS,
               message: 'Your entry has been updated.'
@@ -105,6 +114,7 @@ angular.module(appName)
             cacheObject.removeSavedEntry().then(function(){
               $scope.isSaved = false;
             });
+            modal.close();
             $rootScope.$broadcast(Events.SHOW_MESSAGE,{
               state: Notification.SUCCESS,
               message: 'Your entry has been posted.'
