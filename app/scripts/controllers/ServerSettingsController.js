@@ -13,9 +13,15 @@ app.controller('ServerSettingsController', [
       password: ''
     };
 
+    var btn = angular.element('#button-setting');
+    btn.addClass('active');
+
     // Load user settings
     appSettings.getAPIPath().then(function(apiPath){
       $scope.settings.baseApiUrl = apiPath;
+      if (!apiPath) {
+        $rootScope.showTutorial = true;
+      }
       return appSettings.getAPIUsername();
     }).then(function(username) {
       $scope.settings.username = username;
@@ -54,6 +60,9 @@ app.controller('ServerSettingsController', [
             $rootScope.apiPathChanged = true;
           }
 
+          if ($rootScope.showTutorial) {
+            angular.element('#button-setting').popover('show');
+          }
         }).error(function(res, status) {
           if (status === 400) {
             scope.updateErrorMessage('Unknown error occurs: ' + (res.error.message ? res.error.message : 'Unknown reason'));

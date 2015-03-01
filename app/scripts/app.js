@@ -113,7 +113,8 @@ app.run([
   '$rootScope',
   '$injector',
   'appSettings',
-  function($rootScope, $injector, appSettings) {
+  '$location',
+  function($rootScope, $injector, appSettings, $location) {
     // Initialize
     $rootScope.accessToken = '';
     $rootScope.baseAPIPath = '';

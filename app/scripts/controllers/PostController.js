@@ -43,6 +43,16 @@ angular.module(appName)
             $scope.isSaved = true;
           }
         }));
+
+      };
+
+      var _reloadSiteList = function() {
+        // Load sites
+        $scope.sites = undefined;
+        $scope.categories = undefined;
+        $scope.entry.siteId = undefined;
+        $scope.entry.categories = [];
+        Sites.listBlogsForUser('me', {limit: 999, fields: 'id,parent,name'});
       };
 
       var _postEntry = function() {
@@ -371,5 +381,9 @@ angular.module(appName)
 
       // Load entry
       $scope.loadEntry = _loadEntry;
-    }])
+
+      // Reload Site List
+      $scope.reloadSiteList = _reloadSiteList;
+    }
+  ])
 ;

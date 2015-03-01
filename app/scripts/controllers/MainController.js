@@ -59,6 +59,7 @@ angular.module(appName)
 
       // Setting Event
       $scope.toggleSettings = function() {
+        angular.element('#button-setting').popover('hide');
         var btn = angular.element('#button-setting');
         if (btn.hasClass('active')) {
           btn.removeClass('active');
