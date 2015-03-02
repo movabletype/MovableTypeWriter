@@ -74,32 +74,35 @@ app.config([
               $rootScope.accessToken = '';
               var deferred = $q.defer();
               var url = $rootScope.baseAPIPath + '/' + apiSettings.API_VERSION + '/authentication';
-              if (url == response.config.url ) {
+              var reg = '/' + apiSettings.API_VERSION + '/authentication$';
+              if (response.config.url.match(reg)) {
                 deferred.reject(response);
               }
-              var params = {
-                username: $rootScope.username,
-                password: $rootScope.password,
-                clientId: apiSettings.CLIENT_ID
-              };
-              $injector.get("$http")({
-                method: 'post',
-                url: url,
-                transformRequest: transformRequestAsFormPost,
-                data: params
-              }).success(function(resp) {
-                $rootScope.accessToken = resp.accessToken;
-                $injector.get("$http")(response.config).then(function(resp) {
-                  deferred.resolve(resp);
-                }, function(resp) {
-                  deferred.reject();
-                });
-              })
-                .error(function(){
-                  deferred.reject();
-                  $location.path('/settings');
-                  return;
-                });
+              else {
+                var params = {
+                  username: $rootScope.username,
+                  password: $rootScope.password,
+                  clientId: apiSettings.CLIENT_ID
+                };
+                $injector.get("$http")({
+                  method: 'post',
+                  url: url,
+                  transformRequest: transformRequestAsFormPost,
+                  data: params
+                }).success(function(resp) {
+                  $rootScope.accessToken = resp.accessToken;
+                  $injector.get("$http")(response.config).then(function(resp) {
+                    deferred.resolve(resp);
+                  }, function(resp) {
+                    deferred.reject();
+                  });
+                })
+                  .error(function(){
+                    deferred.reject();
+                    $location.path('/settings');
+                    return;
+                  });
+              }
               return deferred.promise;
             }
             return $q.reject(response);

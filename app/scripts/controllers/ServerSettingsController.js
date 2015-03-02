@@ -39,8 +39,8 @@ app.controller('ServerSettingsController', [
       $rootScope.baseAPIPath = '';
       $rootScope.username = '';
       $rootScope.password = '';
-      AuthService.signIn($scope.settings.baseApiUrl, $scope.settings.username, $scope.settings.password)
-        .success(function(res) {
+      AuthService.signIn($scope.settings.baseApiUrl, $scope.settings.username, $scope.settings.password).then(
+        function(res) {
           // Keep configuration
           $rootScope.accessToken = res.accessToken;
           $rootScope.baseAPIPath = $scope.settings.baseApiUrl;
@@ -63,14 +63,14 @@ app.controller('ServerSettingsController', [
           if ($rootScope.showTutorial) {
             angular.element('#button-setting').popover('show');
           }
-        }).error(function(res, status) {
-          if (status === 400) {
-            scope.updateErrorMessage('Unknown error occurs: ' + (res.error.message ? res.error.message : 'Unknown reason'));
+        }, function(response) {
+          if (response.status === 400) {
+            scope.updateErrorMessage('Unknown error occurs');
           }
-          else if (status === 401) {
+          else if (response.status === 401) {
             scope.updateErrorMessage('Failed to sign in. Username or password is invalid.');
           }
-          else if (status === 404) {
+          else if (response.status === 404) {
             scope.updateErrorMessage('Failed to sign in. Invalid URL for Data API.');
           }
           else {
