@@ -78,6 +78,7 @@ angular.module(appName)
           }
         });
         entry.body = cloneDoc.getElementsByTagName('body')[0].innerHTML;
+        entry.format = 'richtext'; // v1.0.1, richtext format only.
 
         // Remove unnecessary data
         if ( entry.id == '' ){
