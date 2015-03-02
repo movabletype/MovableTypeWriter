@@ -28,7 +28,7 @@ angular.module(appName)
         Sites.listBlogsForUser('me', {limit: 999, fields: 'id,parent,name'});
         if ($rootScope.apiPathChanged) {
           // reset
-          $scope.entry.category = [];
+          $scope.entry.categories = [];
           $scope.entry.siteId = null;
           $rootScope.apiPathChanged = false;
         }
@@ -136,6 +136,7 @@ angular.module(appName)
 
       var _siteChanged = function(checkedList) {
         // Clear current list
+        $scope.entry.categories = [];
         $scope.categories = [];
 
         if (!$scope.entry.siteId) {
