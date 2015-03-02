@@ -174,12 +174,14 @@ angular.module(appName)
                 if (cat.children !== undefined) {
                   var child = cat.children;
                   delete hashedCats[cat.id];
-                  var parentCat = hashedCats[cat.parent];
-                  angular.forEach( parentCat.children, function(_cat, j) {
-                    if (_cat.id === cat.id ) {
-                      parentCat.children[j] = cat;
-                    }
-                  });
+                  if ( cat.parent in hashedCats) {
+                    var parentCat= hashedCats[cat.parent];
+                    angular.forEach( parentCat.children, function(_cat, j) {
+                      if (_cat.id === cat.id ) {
+                        parentCat.children[j] = cat;
+                      }
+                    });
+                  }
                 } else {
                   delete hashedCats[cat.id];
                 }
