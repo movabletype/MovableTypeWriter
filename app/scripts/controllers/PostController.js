@@ -325,7 +325,7 @@ angular.module(appName)
           ['edit',['undo','redo']],
           ['headline', ['style']],
           ['style', ['bold', 'italic', 'underline', 'superscript', 'subscript', 'strikethrough', 'clear']],
-          ['fontclr', ['color']],
+          ['color', ['color']],
           ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
           ['table', ['table']],
           ['insert', ['link', 'hr']],
