@@ -1,7 +1,7 @@
 'use strict';
 
 var appName = 'MovableTypeWriterApp';
-var app = angular.module(appName, ['ui.bootstrap', 'ngRoute', 'summernote']);
+var app = angular.module(appName, ['ui.bootstrap', 'ngRoute', 'summernote', 'ngMessages']);
 
 // route configuration
 app.config([

@@ -2,32 +2,45 @@
   <tabset>
     <tab heading="Server Settings">
       <div class="col-md-12" ng-controller="ServerSettingsController">
-        <form id="setting-form" ng-submit="validateAuthentication()">
+        <form novalidate id="setting-form" name="settingForm" ng-submit="validateAuthentication()">
           <fieldset id="setting-form-set">
             <div class="form-group">
               <label for="mt-api-path">URL for Movable Type Data API Script</label>
-              <input ng-model="settings.baseApiUrl" required type="url" class="form-control" id="mt-api-path" placeholder="https://your-host/mt/mt-data-api.cgi">
+              <input ng-model="settings.baseApiUrl" required type="url" class="form-control" id="mt-api-path" name="mtApiPath" placeholder="https://your-host/mt/mt-data-api.cgi">
+              <div ng-if="settingForm.mtApiPath.$dirty" ng-messages="settingForm.mtApiPath.$error" style="color:maroon">
+                <div ng-message="required">You must set a Data API URL.</div>
+                <div ng-message="url">You must set a valid URL.</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="username">Username</label>
-              <input ng-model="settings.username" required type="text" class="form-control" id="username" placeholder="Your sign in ID of Movable Type">
+              <input ng-model="settings.username" required type="text" class="form-control" id="username" name="username"placeholder="Your sign in ID of Movable Type">
+              <div ng-if="settingForm.username.$dirty" ng-messages="settingForm.username.$error" style="color:maroon">
+                <div ng-message="required">You must set a username.</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
-              <input ng-model="settings.password" required type="password" class="form-control" id="password" placeholder="Your sign in password of Movable Type">
+              <input ng-model="settings.password" required type="password" class="form-control" id="password" name="password" placeholder="Your sign in password of Movable Type">
+              <div ng-if="settingForm.password.$dirty" ng-messages="settingForm.password.$error" style="color:maroon">
+                <div ng-message="required">You must set a username.</div>
+              </div>
             </div>
           </fieldset>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button ng-disabled="!settingForm.$valid" type="submit" class="btn btn-primary">Save</button>
         </form>
       </div>
     </tab>
     <tab heading="Upload Settings">
       <div class="col-md-12" ng-controller="UploadSettingsController" ng-init="initialize()">
-        <form id="upload-setting-form" ng-submit="saveSettings()">
+        <form id="upload-setting-form" name="uploadSettingForm" ng-submit="saveSettings()">
           <fieldset id="upload-setting-form-set">
             <div class="form-group">
               <label for="default-upload-path">Default Upload Path</label>
-              <input ng-model="settings.defaultUploadPath" required type="text" class="form-control" id="default-upload-path" placeholder="The default path for upload image file.">
+              <input ng-model="settings.defaultUploadPath" required type="text" class="form-control" id="default-upload-path" name="defaultUploadPath" placeholder="The default path for upload image file.">
+              <div ng-if="uploadSettingForm.defaultUploadPath.$dirty" ng-messages="uploadSettingForm.defaultUploadPath.$error" style="color:maroon">
+                <div ng-message="required">You must set a default upload path.</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="thumbnail-size">Thumbnail Size</label>
@@ -43,7 +56,7 @@
               </div>
             </div>
           </fieldset>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button ng-disabled="!uploadSettingForm.$valid" type="submit" class="btn btn-primary">Save</button>
         </form>
       </div>
     </tab>
