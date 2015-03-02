@@ -324,7 +324,7 @@ angular.module(appName)
       $scope.options = {
         height: 300,
         focus: true,
-        styleWithSpan: false,
+        styleWithSpan: true,
         toolbar: [
           ['edit',['undo','redo']],
           ['headline', ['style']],
