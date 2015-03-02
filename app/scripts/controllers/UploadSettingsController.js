@@ -16,8 +16,7 @@ app.controller('UploadSettingsController', [
       { label: 'Original Size',  value: 'original' },
       { label: 'Small (240px)',  value: '240'},
       { label: 'Medium (480px)', value: '480'},
-      { label: 'Large (640px)',  value: '640'},
-      { label: 'Extra Large (1024px)', value: '1024' }
+      { label: 'Large (640px)',  value: '640'}
     ];
 
     // Event handler
