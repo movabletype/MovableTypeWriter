@@ -1,13 +1,20 @@
 // @file gulpfile.js
-var gulp     = require('gulp');
-var sass     = require('gulp-ruby-sass');
-var plumber  = require('gulp-plumber');
-var pleeease = require('gulp-pleeease');
-var clean    = require('gulp-clean');
+var gulp       = require('gulp');
+var sass       = require('gulp-ruby-sass');
+var plumber    = require('gulp-plumber');
+var pleeease   = require('gulp-pleeease');
+var del        = require('del');
+var vinylPaths = require('vinyl-paths');
+
+// Clean
+gulp.task('clean', function (cb) {
+  return gulp.src( './dist' )
+    .pipe(vinylPaths( del ));
+});
 
 // SASS Compile
-gulp.task('sass', function () {
-  gulp.src('scss/**/*.scss')
+gulp.task('sass', ['clean'], function () {
+  return gulp.src('scss/**/*.scss')
     .pipe(plumber())
     .pipe(sass({
       style : 'expanded',
@@ -19,7 +26,8 @@ gulp.task('sass', function () {
       },
       minifier: false
     }))
-    .pipe(gulp.dest('app/styles/'));
+    .pipe(gulp.dest('app/styles/'))
+    .pipe(gulp.dest('dist/css'));
 });
 
 // File Watcher
@@ -78,8 +86,6 @@ gulp.task('copy', ['sass'], function() {
     .pipe(gulp.dest('dist/images'));
   gulp.src('app/scripts/**')
     .pipe(gulp.dest('dist/js'));
-  gulp.src('app/styles/**')
-    .pipe(gulp.dest('dist/css'));
   gulp.src('app/views/**')
     .pipe(gulp.dest('dist/views'));
   gulp.src('app/*.html')
@@ -90,12 +96,6 @@ gulp.task('copy', ['sass'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-// Clean
-gulp.task('clean', function(cb) {
-  gulp.src('dist')
-    .pipe(clean());
-});
-
 // Default tasks
-gulp.task('default', ['clean', 'copy']);
+gulp.task('default', ['copy']);
 
