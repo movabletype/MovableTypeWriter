@@ -104,33 +104,51 @@ angular.module(appName)
         // Insert or Update
         if ( $scope.entry.id ) {
           // Update
-          Entries.updateEntry($scope.entry.siteId, $scope.entry.id, entry).then(function(data) {
-            $scope.primaryLabel = 'Update';
-            cacheObject.removeSavedEntry().then(function(){
-              $scope.isSaved = false;
-            });
-            modal.close();
-            $rootScope.$broadcast(Events.SHOW_MESSAGE,{
-              state: Notification.SUCCESS,
-              message: 'Your entry has been updated.'
-            });
-          });
+          Entries.updateEntry($scope.entry.siteId, $scope.entry.id, entry).then(
+            function(data) {
+              $scope.primaryLabel = 'Update';
+              cacheObject.removeSavedEntry().then(function(){
+                $scope.isSaved = false;
+              });
+              modal.close();
+              $rootScope.$broadcast(Events.SHOW_MESSAGE,{
+                state: Notification.SUCCESS,
+                message: 'Your entry has been updated.'
+              });
+            },
+            function(error) {
+              modal.close();
+              $rootScope.$broadcast(Events.SHOW_MESSAGE,{
+                state: Notification.ERROR,
+                message: 'Saving entry failed: ' + error.data.error.message
+              });
+            }
+          );
         }
         else {
           // New
-          Entries.createEntry($scope.entry.siteId, entry).then(function(data) {
-            $scope.primaryLabel = 'Update';
-            $scope.entry.id = data.id;
-            $scope.entry.basename = data.basename;
-            cacheObject.removeSavedEntry().then(function(){
-              $scope.isSaved = false;
-            });
-            modal.close();
-            $rootScope.$broadcast(Events.SHOW_MESSAGE,{
-              state: Notification.SUCCESS,
-              message: 'Your entry has been posted.'
-            });
-          });
+          Entries.createEntry($scope.entry.siteId, entry).then(
+            function(data) {
+              $scope.primaryLabel = 'Update';
+              $scope.entry.id = data.id;
+              $scope.entry.basename = data.basename;
+              cacheObject.removeSavedEntry().then(function(){
+                $scope.isSaved = false;
+              });
+              modal.close();
+              $rootScope.$broadcast(Events.SHOW_MESSAGE,{
+                state: Notification.SUCCESS,
+                message: 'Your entry has been posted.'
+              });
+            },
+            function(error) {
+              modal.close();
+              $rootScope.$broadcast(Events.SHOW_MESSAGE,{
+                state: Notification.ERROR,
+                message: 'Saving entry failed: ' + error.data.error.message
+              });
+            }
+          );
         }
       };
 
