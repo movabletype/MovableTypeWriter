@@ -5,3 +5,8 @@
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
 }
+
+@mixin x-scrollable($height:500px) {
+  overflow-x: scroll;
+  height: $height;
+}
