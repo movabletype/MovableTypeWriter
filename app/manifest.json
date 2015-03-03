@@ -1,5 +1,6 @@
 {
   "name": "Movable Type Writer",
+  "short_name": "MT Writer",
   "description": "Yet Another Movable Type.",
   "manifest_version": 2,
   "version": "1.0.1",
